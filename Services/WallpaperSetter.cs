@@ -17,7 +17,15 @@ public class WallpaperSetter
     private const int SPIF_UPDATEINIFILE = 0x01;
     private const int SPIF_SENDCHANGE = 0x02;
 
-    private readonly HttpClient _http = new();
+    private readonly HttpClient _http = CreateHttpClient();
+
+    private static HttpClient CreateHttpClient()
+    {
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.UserAgent.ParseAdd(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) UnsplashWallpapersApp/1.0");
+        return client;
+    }
 
     // Descarga la imagen desde una URL y la guarda en una carpeta local.
     public async Task<string> DownloadImageAsync(string url, string fileName)

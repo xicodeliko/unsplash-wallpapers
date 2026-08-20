@@ -12,6 +12,7 @@ public partial class MainWindow : Window
     private List<UnsplashPhoto> _currentResults = new();
     private UnsplashPhoto? _currentPhoto;
     private System.Windows.Threading.DispatcherTimer? _autoTimer;
+    private bool _isExiting = false;
 
     public MainWindow(string accessKey)
     {
@@ -22,8 +23,11 @@ public partial class MainWindow : Window
 
         Closing += (s, args) =>
         {
-            args.Cancel = true;
-            Hide();
+            if (!_isExiting)
+            {
+                args.Cancel = true;
+                Hide();
+            }
         };
     }
 
@@ -63,6 +67,20 @@ public partial class MainWindow : Window
         Show();
         WindowState = WindowState.Normal;
         Activate();
+    }
+
+    private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        Show();
+        WindowState = WindowState.Normal;
+        Activate();
+    }
+
+    private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        _isExiting = true;
+        TrayIcon.Dispose();
+        System.Windows.Application.Current.Shutdown();
     }
 
     private async void ApplyButton_Click(object sender, RoutedEventArgs e)
@@ -134,17 +152,25 @@ public partial class MainWindow : Window
 
     private async Task ChangeWallpaperRandomly()
     {
-        var query = GetQuery();
-        var results = await _unsplashService.SearchPhotosAsync(query, 10);
-
-        if (results.Count == 0)
+        try
         {
-            return;
+            // Si no hay fotos cargadas todavía, busca una vez.
+            // Si ya hay resultados de una búsqueda previa, los reutiliza
+            // en vez de golpear la API cada vez (evita el límite de 50/hora).
+            if (_currentResults.Count == 0)
+            {
+                var query = GetQuery();
+                _currentResults = await _unsplashService.SearchPhotosAsync(query, 10);
+            }
+            if (_currentResults.Count == 0) return;
+            var random = new Random();
+            _currentPhoto = _currentResults[random.Next(_currentResults.Count)];
+            var path = await _wallpaperSetter.DownloadImageAsync(_currentPhoto.FullUrl, _currentPhoto.Id);
+            _wallpaperSetter.SetWallpaper(path);
         }
-
-        var random = new Random();
-        _currentPhoto = results[random.Next(results.Count)];
-        var path = await _wallpaperSetter.DownloadImageAsync(_currentPhoto.FullUrl, _currentPhoto.Id);
-        _wallpaperSetter.SetWallpaper(path);
+        catch (Exception ex)
+        {
+            MessageBox.Show($"No se pudo cambiar el fondo automáticamente:\n\n{ex.Message}");
+        }
     }
 }

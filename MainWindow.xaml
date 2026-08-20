@@ -9,7 +9,15 @@
     <Grid>
         <tb:TaskbarIcon x:Name="TrayIcon"
                         ToolTipText="Unsplash Wallpapers"
-                        TrayLeftMouseUp="TrayIcon_TrayLeftMouseUp" />
+                        TrayLeftMouseUp="TrayIcon_TrayLeftMouseUp">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Abrir" Click="OpenMenuItem_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Salir" Click="ExitMenuItem_Click"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
 
         <StackPanel Margin="15">
             <TextBlock Text="Categoría (Topic)" FontWeight="Bold" />

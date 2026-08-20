@@ -1,0 +1,24 @@
+<Window x:Class="UnsplashWallpapers.ApiKeySetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Configurar Unsplash Wallpapers"
+        Height="280"
+        Width="420"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    <StackPanel Margin="20">
+        <TextBlock Text="Bienvenido a Unsplash Wallpapers"
+                   FontWeight="Bold"
+                   FontSize="16"
+                   Margin="0,0,0,10" />
+        <TextBlock TextWrapping="Wrap"
+                   Margin="0,0,0,10">
+            Para usar la app necesitas una Access Key gratuita de Unsplash:
+            1) Entra a unsplash.com/developers con tu cuenta (o créala, es gratis).
+            2) Click en "Your apps" → "New Application".
+            3) Copia el "Access Key" que te dan y pégalo abajo.
+        </TextBlock>
+        <TextBox x:Name="AccessKeyTextBox" Margin="0,0,0,15" />
+        <Button Content="Guardar y continuar" Click="SaveButton_Click" />
+    </StackPanel>
+</Window>

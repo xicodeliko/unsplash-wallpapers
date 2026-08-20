@@ -1,6 +1,11 @@
 # Build output
 bin/
 obj/
+publish/
+installer_output/
+
+# Notas internas de trabajo (no publicar)
+CLAUDE CODE IMPORTANTE/
 
 # Visual Studio and VS Code local files
 .vs/

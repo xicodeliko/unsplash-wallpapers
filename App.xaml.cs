@@ -1,28 +1,37 @@
 using System.Windows;
-using Microsoft.Extensions.Configuration;
+using UnsplashWallpapers.Services;
 
 namespace UnsplashWallpapers;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        DispatcherUnhandledException += (s, args) =>
+        {
+            MessageBox.Show($"Error no manejado:\n\n{args.Exception}");
+            args.Handled = true;
+        };
 
-        var config = new ConfigurationBuilder()
-            .AddUserSecrets<App>()
-            .Build();
-
-        var accessKey = config["Unsplash:AccessKey"];
+        var settingsService = new SettingsService();
+        var settings = settingsService.Load();
+        var accessKey = settings.UnsplashAccessKey;
 
         if (string.IsNullOrWhiteSpace(accessKey))
         {
-            MessageBox.Show("No se encontró la Access Key de Unsplash en user-secrets.");
-            Shutdown();
-            return;
+            var setupWindow = new ApiKeySetupWindow(settingsService);
+            var result = setupWindow.ShowDialog();
+            if (result != true)
+            {
+                Shutdown();
+                return;
+            }
+
+            accessKey = setupWindow.SavedAccessKey;
         }
 
-        var mainWindow = new MainWindow(accessKey);
+        var mainWindow = new MainWindow(accessKey!);
         mainWindow.Show();
     }
 }
