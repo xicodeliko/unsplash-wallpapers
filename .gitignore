@@ -1,0 +1,22 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio and VS Code local files
+.vs/
+.vscode/
+
+# Local user secrets and environment files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+appsettings.Development.json
+appsettings.Local.json
+.env
+.env.*
+!.env.example
+
+# OS files
+Thumbs.db
+Desktop.ini

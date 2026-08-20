@@ -1,0 +1,64 @@
+<Window x:Class="UnsplashWallpapers.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:tb="clr-namespace:H.NotifyIcon;assembly=H.NotifyIcon.Wpf"
+        Title="Unsplash Wallpapers"
+        Height="500"
+        Width="400"
+        WindowStartupLocation="CenterScreen">
+    <Grid>
+        <tb:TaskbarIcon x:Name="TrayIcon"
+                        ToolTipText="Unsplash Wallpapers"
+                        TrayLeftMouseUp="TrayIcon_TrayLeftMouseUp" />
+
+        <StackPanel Margin="15">
+            <TextBlock Text="Categoría (Topic)" FontWeight="Bold" />
+            <ComboBox x:Name="TopicComboBox" Margin="0,5,0,10">
+                <ComboBoxItem Content="nature" />
+                <ComboBoxItem Content="travel" />
+                <ComboBoxItem Content="architecture" />
+                <ComboBoxItem Content="wallpapers" />
+                <ComboBoxItem Content="minimal" />
+                <ComboBoxItem Content="animals" />
+            </ComboBox>
+
+            <TextBlock Text="O búsqueda libre" FontWeight="Bold" />
+            <TextBox x:Name="KeywordTextBox" Margin="0,5,0,10" />
+            <Button x:Name="SearchButton"
+                    Content="Buscar"
+                    Click="SearchButton_Click"
+                    Margin="0,0,0,10" />
+
+            <Image x:Name="PreviewImage"
+                   Height="180"
+                   Stretch="UniformToFill"
+                   Margin="0,0,0,5" />
+            <TextBlock x:Name="PhotographerText"
+                       FontStyle="Italic"
+                       Margin="0,0,0,10" />
+
+            <TextBlock Text="Intervalo de cambio automático" FontWeight="Bold" />
+            <ComboBox x:Name="IntervalComboBox" Margin="0,5,0,5">
+                <ComboBoxItem Content="30 minutos" Tag="30" />
+                <ComboBoxItem Content="1 hora" Tag="60" />
+                <ComboBoxItem Content="3 horas" Tag="180" />
+                <ComboBoxItem Content="6 horas" Tag="360" />
+                <ComboBoxItem Content="Diario" Tag="1440" />
+                <ComboBoxItem Content="Personalizado (minutos abajo)" Tag="custom" />
+            </ComboBox>
+            <TextBox x:Name="CustomMinutesTextBox" Margin="0,0,0,10" />
+
+            <Button x:Name="ApplyButton"
+                    Content="Aplicar como fondo de pantalla"
+                    Click="ApplyButton_Click"
+                    Margin="0,0,0,5" />
+            <Button x:Name="DownloadButton"
+                    Content="Descargar imagen actual"
+                    Click="DownloadButton_Click"
+                    Margin="0,0,0,5" />
+            <Button x:Name="AutoChangeButton"
+                    Content="Iniciar cambio automático"
+                    Click="AutoChangeButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>
